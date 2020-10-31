@@ -24,11 +24,6 @@ class CronJobRun extends Command
     protected $cronConfig;
 
     /**
-     * @var Area
-     */
-    protected $area;
-
-    /**
      * @var State
      */
     protected $state;
@@ -39,19 +34,16 @@ class CronJobRun extends Command
     protected $objectManager;
 
     /**
-     * @param Area                   $area
      * @param State                  $state
      * @param CronConfigInterface    $cronConfig
      * @param ObjectManagerInterface $objectManager
      */
     public function __construct(
-        Area $area,
         State $state,
         CronConfigInterface $cronConfig,
         ObjectManagerInterface $objectManager
     )
     {
-        $this->area = $area;
         $this->state = $state;
         $this->cronConfig = $cronConfig;
         $this->objectManager = $objectManager;
@@ -80,13 +72,21 @@ class CronJobRun extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $cronArgument = $input->getArgument(self::MTOOLS_CRON_ARGUMENT);
-        $cronConfig = $this->validateJob($cronArgument);
-        if (!$cronConfig) {
-            throw new \Exception('CronJob does not exists');
+        $self = $this;
+        try {
+            //$this->state->emulateAreaCode(Area::AREA_CRONTAB, function (&$input, &$output) use ($self) {
+                $this->state->setAreaCode(Area::AREA_ADMINHTML);
+                $cronArgument = $input->getArgument(self::MTOOLS_CRON_ARGUMENT);
+                $cronConfig = $this->validateJob($cronArgument);
+                if (!$cronConfig) {
+                    throw new \Exception('CronJob does not exists');
+                }
+                $this->runCronJob($cronConfig);
+                $output->writeln('<info>' . 'CronJob was executed.' . '</info>');
+            //});
+        } catch (\Exception $exception) {
+            $output->writeln('<error>' . $exception->getMessage() . '</error>');
         }
-        $this->runCronJob($cronConfig);
-        $output->writeln('<info>' . 'CronJob was executed.' . '</info>');
     }
 
     /**
@@ -112,8 +112,6 @@ class CronJobRun extends Command
      */
     protected function runCronJob($cronConfig)
     {
-        $this->state->setAreaCode($this->area::AREA_CRONTAB);
-
         if (!isset($cronConfig['instance'], $cronConfig['method'])) {
             throw new \Exception('No callbacks found');
         }
