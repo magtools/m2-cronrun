@@ -1,1 +1,1 @@
-# m2-cronrun
+# m2-adminlog

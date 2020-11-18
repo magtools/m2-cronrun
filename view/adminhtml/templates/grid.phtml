@@ -1,0 +1,77 @@
+<?php /** @var $block \Mtools\AdminLog\Block\File\Grid */ ?>
+<?php $logs = $block->getLogFiles(); ?>
+
+<section class="admin__page-section">
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item-title">
+            <span class="title"><?php echo __('Log Info') ?></span>
+        </div>
+        <div class="admin__page-section-item-content">
+            <table class="admin__table-primary">
+                <tr>
+                    <th class="filename">Filename</th>
+                    <th class="small">Directory</th>
+                    <th class="small">Size</th>
+                    <th class="date">Last Modified</th>
+                    <th class="log">Last 100 lines</th>
+                    <th class="small">Actions</th>
+                </tr>
+            <?php foreach($logs as $log) { ?>
+                <tr>
+                    <td class="filename"><a href="<?php echo $block->previewLogFile($log['name']); ?>"><?php echo $log['name'] ?></a></td>
+                    <td class="small">var/log</td>
+                    <td class="small"><?php echo $log['filesize'] ?></td>
+                    <td class="date"><?php echo $log['modTimeLong'] ?></td>
+                    <td class="log">
+                        <div class="admin__page-section-item-content">
+                            <pre><?php echo $block->getLogFile($log['name']) ?></pre>
+                        </div>
+                    </td>
+                    <td class="small">
+                        <span class="action-children"><a href="<?php echo $block->previewLogFile($log['name']); ?>" class="icon-view"> View</a></span><br/>
+                        <span class="action-children"><a href="<?php echo $block->downloadLogFiles($log['name']); ?>" class="icon-export"> Download</a></span>
+                    </td>
+                </tr>
+            <?php } ?>
+            </table>
+        </div>
+    </div>
+</section>
+<style>
+    .admin__table-primary .filename{ width: 10vw; max-width: 150px; }
+    .admin__table-primary .small{ width: 10vw; max-width: 100px; }
+    .admin__table-primary .date{ width: 10vw; max-width: 150px; }
+    .admin__table-primary .log{ width: 50vw; }
+    .admin__table-primary .log pre{ overflow: auto; width: 55vw; height: 350px; }
+    .icon-view:before {
+        font-family: 'Admin Icons';
+        content: '\e60c';
+        color: #333333;
+        -webkit-font-smoothing: antialiased;
+        font-style: normal;
+        font-weight: normal;
+        margin-left: -10px;
+    }
+    .icon-export:before {
+        font-family: 'Admin Icons';
+        content: '\e601';
+        color: #333333;
+        -webkit-font-smoothing: antialiased;
+        font-style: normal;
+        font-weight: normal;
+        margin-left: -10px;
+    }
+    .action-children {
+        min-width: 100px;
+        margin-right: 8px;
+        overflow: visible;
+        text-wrap: none;
+        display: block;
+        color: #333;
+    }
+    .action-children a {
+        min-width: 100px;
+        text-decoration:  none;
+        color: #333;
+    }
+</style>
