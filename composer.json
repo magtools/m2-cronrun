@@ -1,7 +1,7 @@
 {
-    "name": "magtools/m2-adminlog",
+    "name": "magtools/m2-cronrun",
     "homepage": "https://github.com/magtools",
-    "description": "Admin Log Module",
+    "description": "Cron Run Module",
     "authors":[
         {
         "name":  "Martin Gonzalez",
@@ -22,7 +22,7 @@
     "autoload": {
         "files": [ "registration.php" ],
         "psr-4": {
-            "Mtools\\AdminLog\\": ""
+            "Mtools\\CronRun\\": ""
         }
     }
 }

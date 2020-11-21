@@ -72,18 +72,15 @@ class CronJobRun extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $self = $this;
         try {
-            //$this->state->emulateAreaCode(Area::AREA_CRONTAB, function (&$input, &$output) use ($self) {
-                $this->state->setAreaCode(Area::AREA_ADMINHTML);
-                $cronArgument = $input->getArgument(self::MTOOLS_CRON_ARGUMENT);
-                $cronConfig = $this->validateJob($cronArgument);
-                if (!$cronConfig) {
-                    throw new \Exception('CronJob does not exists');
-                }
-                $this->runCronJob($cronConfig);
-                $output->writeln('<info>' . 'CronJob was executed.' . '</info>');
-            //});
+            $this->state->setAreaCode(Area::AREA_ADMINHTML);
+            $cronArgument = $input->getArgument(self::MTOOLS_CRON_ARGUMENT);
+            $cronConfig = $this->validateJob($cronArgument);
+            if (!$cronConfig) {
+                throw new \Exception('CronJob does not exists');
+            }
+            $this->runCronJob($cronConfig);
+            $output->writeln('<info>' . 'CronJob was executed.' . '</info>');
         } catch (\Exception $exception) {
             $output->writeln('<error>' . $exception->getMessage() . '</error>');
         }

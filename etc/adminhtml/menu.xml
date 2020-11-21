@@ -2,12 +2,13 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="Mtools_AdminLog::file_logs_view"
-             title="View File Logs"
-             module="Mtools_AdminLog"
+        <add id="Mtools_CronRun::cron_scheduled"
+             title="Cron Scheduled Jobs"
+             translate="title"
+             module="Mtools_CronRun"
              sortOrder="100"
-             parent="Magento_AsynchronousOperations::system_magento_logging"
-             action="mtoolslogview/file/grid"
-             resource="Magento_Backend::system"/>
+             parent="Magento_Backend::system_tools"
+             action="mtoolscronrun/schedule/grid"
+             resource="Mtools_CronRun::cron_scheduled"/>
     </menu>
 </config>
