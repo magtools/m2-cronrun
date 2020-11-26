@@ -2,6 +2,6 @@
 
 \Magento\Framework\Component\ComponentRegistrar::register(
 	\Magento\Framework\Component\ComponentRegistrar::MODULE,
-	'Mtools_AdminLog',
+	'Mtools_CronRun',
 	__DIR__
 );
