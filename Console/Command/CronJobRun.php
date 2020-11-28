@@ -42,8 +42,7 @@ class CronJobRun extends Command
         State $state,
         CronConfigInterface $cronConfig,
         ObjectManagerInterface $objectManager
-    )
-    {
+    ) {
         $this->state = $state;
         $this->cronConfig = $cronConfig;
         $this->objectManager = $objectManager;

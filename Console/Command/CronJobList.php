@@ -35,7 +35,7 @@ class CronJobList extends Command
      * @param CronConfigInterface    $cronConfig
      * @param ObjectManagerInterface $objectManager
      */
-    public function __construct (
+    public function __construct(
         CronConfigInterface $cronConfig,
         ObjectManagerInterface $objectManager
     ) {
@@ -71,7 +71,7 @@ class CronJobList extends Command
                 }
                 if (empty($findCronJob)) {
                     $output->writeln($cronJob['name']);
-                } else if ( strripos($cronJob['name'], $findCronJob) !== false ) {
+                } elseif (strripos($cronJob['name'], $findCronJob) !== false) {
                     $output->writeln($cronJob['name']);
                     $findMatch = true;
                 }
@@ -79,7 +79,7 @@ class CronJobList extends Command
         }
 
         if (!$findMatch && !empty($findCronJob)) {
-            $output->writeln( '<error>Search did not match any result.</error>');
+            $output->writeln('<error>Search did not match any result.</error>');
         }
     }
 }
