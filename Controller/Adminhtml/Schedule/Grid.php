@@ -54,7 +54,7 @@ class Grid extends \Magento\Backend\App\Action
      */
     public function getResultPage()
     {
-        if (is_null($this->resultPage)) {
+        if ($this->resultPage === null) {
             $this->resultPage = $this->resultPageFactory->create();
         }
         return $this->resultPage;

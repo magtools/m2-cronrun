@@ -5,6 +5,8 @@ namespace Mtools\CronRun\Console\Command;
 use Magento\Framework\App\Area;
 use Magento\Framework\App\State;
 use Magento\Framework\ObjectManagerInterface;
+use Magento\Framework\Exception\InvalidArgumentException;
+use Magento\Framework\Exception\RuntimeException;
 use Magento\Cron\Model\ConfigInterface as CronConfigInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -62,7 +64,6 @@ class CronJobRun extends Command
         parent::configure();
     }
 
-
     /**
      * @param InputInterface  $input
      * @param OutputInterface $output
@@ -76,7 +77,7 @@ class CronJobRun extends Command
             $cronArgument = $input->getArgument(self::MTOOLS_CRON_ARGUMENT);
             $cronConfig = $this->validateJob($cronArgument);
             if (!$cronConfig) {
-                throw new \Exception('CronJob does not exists');
+                throw new InvalidArgumentException(__('CronJob does not exists'));
             }
             $this->runCronJob($cronConfig);
             $output->writeln('<info>' . 'CronJob was executed.' . '</info>');
@@ -109,7 +110,7 @@ class CronJobRun extends Command
     protected function runCronJob($cronConfig)
     {
         if (!isset($cronConfig['instance'], $cronConfig['method'])) {
-            throw new \Exception('No callbacks found');
+            throw new RuntimeException(__('No callbacks found'));
         }
 
         $cronObject = $this->objectManager->create($cronConfig['instance']);
@@ -118,7 +119,7 @@ class CronJobRun extends Command
 
         try {
             if (!is_callable($callback)) {
-                throw new \Exception(
+                throw new RuntimeException(
                     __('Cron: %s::%s can\'t run', $cronConfig['instance'], $cronConfig['method'])
                 );
             }

@@ -47,7 +47,11 @@ class CronJobList extends Command
 
     protected function configure()
     {
-        $argument = new InputArgument(self::MTOOLS_CRON_ARGUMENT, InputArgument::OPTIONAL, 'Allow search by partial cron_job');
+        $argument = new InputArgument(
+            self::MTOOLS_CRON_ARGUMENT,
+            InputArgument::OPTIONAL,
+            'Allow search by partial cron_job'
+        );
         $this->setName('cron:job:list')
             ->setDescription('List cron jobs')
             ->setDefinition([$argument]);
@@ -61,7 +65,6 @@ class CronJobList extends Command
         $cronGroups = $this->cronConfig->getJobs();
         $findCronJob = $input->getArgument(self::MTOOLS_CRON_ARGUMENT);
         $findMatch = false;
-        $step = false;
 
         $output->writeln('<info>Cron Job List:</info>');
         foreach ($cronGroups as $group) {
