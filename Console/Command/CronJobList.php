@@ -45,6 +45,9 @@ class CronJobList extends Command
         parent::__construct();
     }
 
+    /**
+     * Configure job
+     */
     protected function configure()
     {
         $argument = new InputArgument(
@@ -59,30 +62,55 @@ class CronJobList extends Command
         parent::configure();
     }
 
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return int|void
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
+        $findMatch = false;
         $cronGroups = $this->cronConfig->getJobs();
         $findCronJob = $input->getArgument(self::MTOOLS_CRON_ARGUMENT);
-        $findMatch = false;
 
-        $output->writeln('<info>Cron Job List:</info>');
+        $jobList = [];
         foreach ($cronGroups as $group) {
             foreach ($group as $cronJob) {
-                if (empty($cronJob['name'])) {
-                    continue;
-                }
-                if (empty($findCronJob)) {
-                    $output->writeln($cronJob['name']);
-                } elseif (strripos($cronJob['name'], $findCronJob) !== false) {
-                    $output->writeln($cronJob['name']);
-                    $findMatch = true;
+                if (!empty($cronJob['name'])) {
+                    $jobList[] = $cronJob['name'];
                 }
             }
+        }
+        $output->writeln('<info>Cron Job List:</info>');
+        foreach ($this->searchJobList($jobList,$findCronJob,$findMatch) as $cronJobName) {
+            $output->writeln($cronJobName);
         }
 
         if (!$findMatch && !empty($findCronJob)) {
             $output->writeln('<error>Search did not match any result.</error>');
         }
+    }
+
+    /**
+     * @param $jobList
+     * @param $findCronJob
+     * @param $findMatch
+     *
+     * @return array
+     */
+    protected function searchJobList($jobList, $findCronJob, &$findMatch)
+    {
+        if (!empty($findCronJob)) {
+            $jobFilteredList = [];
+            foreach ($jobList as $cronJobName) {
+                if (strripos($cronJobName, $findCronJob) !== false) {
+                    $jobFilteredList[] = $cronJobName;
+                    $findMatch = true;
+                }
+            }
+            $jobList = $jobFilteredList;
+        }
+        return $jobList;
     }
 }
