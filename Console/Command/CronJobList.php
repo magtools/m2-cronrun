@@ -83,7 +83,7 @@ class CronJobList extends Command
             }
         }
         $output->writeln('<info>Cron Job List:</info>');
-        foreach ($this->searchJobList($jobList,$findCronJob,$findMatch) as $cronJobName) {
+        foreach ($this->searchJobList($jobList, $findCronJob, $findMatch) as $cronJobName) {
             $output->writeln($cronJobName);
         }
 
