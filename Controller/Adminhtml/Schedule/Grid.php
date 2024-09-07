@@ -12,7 +12,7 @@ class Grid extends \Magento\Backend\App\Action
     /**
      * @const acl
      */
-    const ADMIN_RESOURCE = 'Mtools_CronRun::cron_scheduled';
+     public const ADMIN_RESOURCE = 'Mtools_CronRun::cron_scheduled';
 
     /**
      * @var Page

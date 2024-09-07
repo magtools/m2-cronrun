@@ -18,7 +18,7 @@ class CronJobRun extends Command
     /**
      * @const
      */
-    const MTOOLS_CRON_ARGUMENT = 'cronjob';
+    protected const MTOOLS_CRON_ARGUMENT = 'cronjob';
 
     /**
      * @var CronConfigInterface
@@ -68,7 +68,7 @@ class CronJobRun extends Command
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @throws \Exception
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -77,19 +77,25 @@ class CronJobRun extends Command
             $cronArgument = $input->getArgument(self::MTOOLS_CRON_ARGUMENT);
             $cronConfig = $this->validateJob($cronArgument);
             if (!$cronConfig) {
-                throw new InvalidArgumentException(__('CronJob does not exists'));
+                throw new InvalidArgumentException(__('CronJob does not exist'));
             }
             $this->runCronJob($cronConfig);
             $output->writeln('<info>' . 'CronJob was executed.' . '</info>');
+
+            // Return success code
+            return Command::SUCCESS;
         } catch (\Exception $exception) {
             $output->writeln('<error>' . $exception->getMessage() . '</error>');
+
+            // Return failure code
+            return Command::FAILURE;
         }
     }
 
     /**
-     * @param string $cronjob
+     * @param $cronjob
      *
-     * @return string $cronConfig
+     * @return mixed
      */
     protected function validateJob($cronjob)
     {
@@ -102,10 +108,9 @@ class CronJobRun extends Command
     }
 
     /**
-     * @param string $cronConfig
+     * @param $cronConfig
      *
-     * @return void
-     * @throws \Exception
+     * @throws RuntimeException
      */
     protected function runCronJob($cronConfig)
     {

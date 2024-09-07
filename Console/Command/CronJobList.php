@@ -14,7 +14,7 @@ class CronJobList extends Command
     /**
      * @const
      */
-    const MTOOLS_CRON_ARGUMENT = 'cronjob';
+    public const MTOOLS_CRON_ARGUMENT = 'cronjob';
 
     /**
      * @var array
@@ -66,7 +66,7 @@ class CronJobList extends Command
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return int|void
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -90,6 +90,9 @@ class CronJobList extends Command
         if (!$findMatch && !empty($findCronJob)) {
             $output->writeln('<error>Search did not match any result.</error>');
         }
+
+        // Return an integer value indicating the status of the command
+        return Command::SUCCESS; // or return 0; for success
     }
 
     /**
